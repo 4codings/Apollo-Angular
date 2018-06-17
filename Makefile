@@ -81,6 +81,12 @@ api:
 		-e POSTGRES_DB=$(POSTGRES_DB) \
 		$(API_TAG)
 
+codegen:
+	cd angular && \
+		npx apollo-codegen introspect-schema http://$API_HOST:$API_PORT/graphql --output schema.json \
+		npx apollo-codegen generate
+
+
 angular-prod:
 	-docker rm -f $(ANGULAR_NAME)
 

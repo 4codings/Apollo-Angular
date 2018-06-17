@@ -7,10 +7,12 @@ import { NgModule } from '@angular/core';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { ListComponent } from './list/list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,7 @@ export class AppModule {
     apollo: Apollo,
     httpLink: HttpLink
   ) {
-    const uri = `http://${environment.apiHost}:${environment.apiPort}`;
+    const uri = `http://${environment.apiHost}:${environment.apiPort}/graphql`;
 
     apollo.create({
       link: httpLink.create({
