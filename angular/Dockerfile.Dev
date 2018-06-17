@@ -10,4 +10,6 @@ RUN npm install --development
 COPY ./*.json $ANGULAR_WORKDIR/
 COPY ./src $ANGULAR_WORKDIR/src
 
-CMD npx ng serve --host 0.0.0.0 --port $ANGULAR_PORT
+CMD npx ng serve \
+  --host 0.0.0.0 \
+  --port $ANGULAR_PORT
