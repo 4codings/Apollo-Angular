@@ -21,6 +21,9 @@ API_WORKDIR=/var/workdir/api
 API_HOST=localhost
 API_PORT=5001
 
+APOLLO_SCHEMA=angular/src/app/gen/schema.json
+APOLLO_TYPES=angular/src/app/gen/apollo-types.ts
+
 ANGULAR_NAME=angular
 ANGULAR_WORKDIR=/var/angular
 ANGULAR_TAG_DEV=angular:dev
@@ -82,9 +85,13 @@ api:
 		$(API_TAG)
 
 codegen:
-	cd angular && \
-		npx apollo-codegen introspect-schema http://$API_HOST:$API_PORT/graphql --output schema.json \
-		npx apollo-codegen generate
+	npx apollo-codegen introspect-schema \
+		http://$(API_HOST):$(API_PORT)/graphql \
+		--output $(APOLLO_SCHEMA)
+	npx apollo-codegen generate angular/**/*.graphql \
+		--schema $(APOLLO_SCHEMA) \
+		--target typescript \
+		--output $(APOLLO_TYPES)
 
 
 angular-prod:
