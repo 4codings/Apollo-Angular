@@ -1,0 +1,14 @@
+query {
+  allPosts(first: 5) {
+    nodes {
+      id
+      topic
+      headline
+      summary
+      personByAuthorId {
+        id
+        fullName
+      }
+    }
+  }
+}

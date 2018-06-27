@@ -4,6 +4,8 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+declare var require: any
+const AllPosts = require('graphql-tag/loader!./list.component.graphql')
 
 export type Author = {
   id: number;
@@ -25,23 +27,6 @@ export type Nodes = {
 export type Query = {
   allPosts: Nodes
 }
-
-const AllPosts = gql`
-  query {
-    allPosts(first: 5) {
-      nodes {
-        id
-        topic
-        headline
-        summary
-        personByAuthorId {
-          id
-          fullName
-        }
-      }
-    }
-  }
-`
 
 @Component({
   selector: 'app-list',
