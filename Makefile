@@ -36,6 +36,9 @@ network:
 	-docker network rm $(NETWORK_NAME)
 	docker network create --driver bridge $(NETWORK_NAME)
 
+##################################################
+# Database
+
 db:
 	-docker rm -f $(DB_NAME)
 
@@ -65,6 +68,9 @@ seed:
 	docker exec -it $(DB_NAME) \
 		/bin/bash $(DB_WORKDIR)/load.sh data.sql
 
+##################################################
+# API
+
 api:
 	-docker rm -f $(API_NAME)
 
@@ -84,15 +90,21 @@ api:
 		-e POSTGRES_DB=$(POSTGRES_DB) \
 		$(API_TAG)
 
-codegen:
+$(APOLLO_SCHEMA):
 	npx apollo-codegen introspect-schema \
 		http://$(API_HOST):$(API_PORT)/graphql \
 		--output $(APOLLO_SCHEMA)
+
+$(APOLLO_TYPES): $(APOLLO_SCHEMA)
 	npx apollo-codegen generate angular/**/*.graphql \
 		--schema $(APOLLO_SCHEMA) \
 		--target typescript \
 		--output $(APOLLO_TYPES)
 
+codegen: $(APOLLO_TYPES)
+
+##################################################
+# Angular
 
 angular-prod:
 	-docker rm -f $(ANGULAR_NAME)
