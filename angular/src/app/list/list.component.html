@@ -4,7 +4,7 @@
       <h5 class="card-title">{{post.headline}}</h5>
       <h6 *ngIf="post.personByAuthorId.fullName" class="card-subtitle mb-2 text-muted">by {{post.personByAuthorId.fullName}}</h6>
       <p class="card-text">{{post.summary}}</p>
-      <a href="{{post.url}}" class="card-link">Go to post</a>
+      <a href="article/{{post.id}}" class="card-link">Go to post</a>
     </div>
   </div>
 </div>

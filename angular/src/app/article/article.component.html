@@ -1,0 +1,7 @@
+<div *ngIf="loading">Loading</div>
+<div *ngIf="!loading">
+  <h1>{{post.headline}}</h1>
+  <h3>{{post.personByAuthorId.fullName}}</h3>
+  <h4>{{post.topic}}</h4>
+  <p><a href="article/{{post.id}}">(link)</a> {{post.body}}</p>
+</div>

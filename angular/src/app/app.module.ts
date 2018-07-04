@@ -8,17 +8,22 @@ import { NgModule } from '@angular/core';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { ListComponent } from './list/list.component';
+import { ArticleComponent } from './article/article.component';
+import { AppRoutingModule } from './/app-routing.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListComponent
+    ListComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     HttpLinkModule,
-    ApolloModule
+    ApolloModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
