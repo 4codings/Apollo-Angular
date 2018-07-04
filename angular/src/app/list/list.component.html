@@ -1,10 +1,12 @@
-<div *ngFor="let post of posts | async">
-  <div class="card" style="width: 100%; margin-top: 10px">
-    <div class="card-body">
-      <h5 class="card-title">{{post.headline}}</h5>
-      <h6 *ngIf="post.personByAuthorId.fullName" class="card-subtitle mb-2 text-muted">by {{post.personByAuthorId.fullName}}</h6>
-      <p class="card-text">{{post.summary}}</p>
-      <a href="article/{{post.id}}" class="card-link">Go to post</a>
+<div class="container mt-5">
+  <div *ngFor="let post of posts | async">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{post.headline}}</h5>
+        <h6 *ngIf="post.personByAuthorId.fullName" class="card-subtitle mb-2 text-muted">by {{post.personByAuthorId.fullName}}</h6>
+        <p class="card-text">{{post.summary}}</p>
+        <a href="article/{{post.id}}" class="card-link">Go to post</a>
+      </div>
     </div>
   </div>
 </div>

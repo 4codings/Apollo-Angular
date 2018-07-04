@@ -1,7 +1,15 @@
-<div *ngIf="loading">Loading</div>
-<div *ngIf="!loading">
-  <h1>{{post.headline}}</h1>
-  <h3>{{post.personByAuthorId.fullName}}</h3>
-  <h4>{{post.topic}}</h4>
-  <p><a href="article/{{post.id}}">(link)</a> {{post.body}}</p>
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <div *ngIf="loading">Loading</div>
+      <div *ngIf="!loading">
+        <h1 class="card-title">{{post.headline}}</h1>
+        <h3 class="card-subtitle mb-2 text-muted">{{post.personByAuthorId.fullName}}</h3>
+        <h4>{{post.topic}}</h4>
+        <a href="/" class="card-link">Back</a>
+        <a href="article/{{post.id}}" class="card-link">Link</a>
+        <p>{{post.body}}</p>
+      </div>
+    </div>
+  </div>
 </div>
