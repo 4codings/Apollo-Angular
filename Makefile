@@ -1,4 +1,4 @@
-.PHONY: network db seed api angular-dev angular-prod
+.PHONY: network db seed api angular-dev angular-prod codegen
 
 SHELL=bash
 
@@ -95,13 +95,11 @@ $(APOLLO_SCHEMA):
 		http://$(API_HOST):$(API_PORT)/graphql \
 		--output $(APOLLO_SCHEMA)
 
-$(APOLLO_TYPES): $(APOLLO_SCHEMA)
+codegen: $(APOLLO_SCHEMA)
 	npx apollo-codegen generate angular/**/*.graphql \
 		--schema $(APOLLO_SCHEMA) \
 		--target typescript \
 		--output $(APOLLO_TYPES)
-
-codegen: $(APOLLO_TYPES)
 
 ##################################################
 # Angular
