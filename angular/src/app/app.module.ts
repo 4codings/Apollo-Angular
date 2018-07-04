@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { ListComponent } from './list/list.component';
 import { ArticleComponent } from './article/article.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { AuthorComponent } from './author/author.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { AppRoutingModule } from './/app-routing.module';
     AppComponent,
     ListComponent,
     ArticleComponent,
+    AuthorComponent,
   ],
   imports: [
     BrowserModule,

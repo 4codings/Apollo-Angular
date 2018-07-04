@@ -4,12 +4,13 @@
       <div *ngIf="loading || !post">Loading</div>
       <div *ngIf="!loading && post">
         <h1 class="card-title">{{post.headline}}</h1>
+        <h6 class="card-subtitle mb-2 text-muted">Published {{post.createdAt | date:'fullDate'}}</h6>
         <h4>{{post.topic}}</h4>
-          <a href="author/{{post.personByAuthorId.id}}" class="card-subtitle mb-2 card-link">{{post.personByAuthorId.fullName}}</a>
-          <a href="/" class="card-link">Back</a>
-          <a href="article/{{post.id}}" class="card-link">Link</a>
+        By <a href="author/{{post.personByAuthorId.id}}" class="card-subtitle mb-2 card-link">{{post.personByAuthorId.fullName}}</a>
+        <a href="article/{{post.id}}" class="card-link">Link</a>
         <p class="mt-3">{{post.body}}</p>
       </div>
+      <a href="/" class="card-link">Home</a>
     </div>
   </div>
 </div>

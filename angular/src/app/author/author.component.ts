@@ -5,17 +5,17 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 declare var require: any
-const PostQuery = require('graphql-tag/loader!./article.component.graphql')
-import { Post } from '../gen/apollo-types'
+const AuthorQuery = require('graphql-tag/loader!./author.component.graphql')
+import { Author } from '../gen/apollo-types'
 
 @Component({
-  selector: 'app-article',
-  templateUrl: './article.component.html',
-  styleUrls: ['./article.component.css']
+  selector: 'app-author',
+  templateUrl: './author.component.html',
+  styleUrls: ['./author.component.css']
 })
-export class ArticleComponent implements OnInit {
+export class AuthorComponent implements OnInit {
   loading: boolean;
-  post: any;
+  author: any;
   private querySubscription: any;
 
   constructor(
@@ -26,15 +26,15 @@ export class ArticleComponent implements OnInit {
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.querySubscription = this.apollo
-      .watchQuery<Post>({
-        query: PostQuery,
+      .watchQuery<Author>({
+        query: AuthorQuery,
         variables: {
           id: id
         }
       })
       .valueChanges
       .subscribe( ({data, loading}) => {
-        this.post = data.postById;
+        this.author = data.personById;
         this.loading = loading;
       });
   }

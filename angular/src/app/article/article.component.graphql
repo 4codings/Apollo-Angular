@@ -4,6 +4,7 @@ query Post($id: Int!) {
     headline
     topic
     body
+    createdAt
     personByAuthorId {
       id
       fullName
