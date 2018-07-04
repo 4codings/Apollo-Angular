@@ -5,6 +5,7 @@ query Post($id: Int!) {
     topic
     body
     personByAuthorId {
+      id
       fullName
     }
   }
