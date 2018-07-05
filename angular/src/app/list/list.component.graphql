@@ -1,4 +1,4 @@
-query AllPosts {
+query PostList {
   allPosts(first: 5) {
     nodes {
       id

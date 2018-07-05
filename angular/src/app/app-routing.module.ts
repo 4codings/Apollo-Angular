@@ -7,9 +7,10 @@ import { AuthorComponent } from './author/author.component';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '',             component: ListComponent },
-  { path: 'article/:id',   component: ArticleComponent },
-  { path: 'author/:id',   component: AuthorComponent }
+  { path: '',            component: ListComponent },
+  { path: 'articles',    component: ListComponent },
+  { path: 'article/:id', component: ArticleComponent },
+  { path: 'author/:id',  component: AuthorComponent }
 ]
 
 @NgModule({

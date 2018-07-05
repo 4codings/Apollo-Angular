@@ -4,8 +4,8 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 declare var require: any
-const AllPostsQuery = require('graphql-tag/loader!./list.component.graphql')
-import { AllPosts } from '../gen/apollo-types'
+const PostListQuery = require('graphql-tag/loader!./list.component.graphql')
+import { PostList } from '../gen/apollo-types'
 
 @Component({
   selector: 'app-list',
@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.posts = this.apollo
-      .watchQuery<AllPosts>({ query: AllPostsQuery })
+      .watchQuery<PostList>({ query: PostListQuery })
       .valueChanges
       .pipe(
         map(({data}) => data.allPosts.nodes)
