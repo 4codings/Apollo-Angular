@@ -5,8 +5,8 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 declare var require: any
-const PostQuery = require('graphql-tag/loader!./article.component.graphql')
-import { Post } from '../gen/apollo-types'
+const Post = require('graphql-tag/loader!./article.component.graphql')
+import { PostQuery } from '../gen/apollo-types'
 
 @Component({
   selector: 'app-article',
@@ -26,8 +26,8 @@ export class ArticleComponent implements OnInit {
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.querySubscription = this.apollo
-      .watchQuery<Post>({
-        query: PostQuery,
+      .watchQuery<PostQuery>({
+        query: Post,
         variables: {
           id: id
         }
