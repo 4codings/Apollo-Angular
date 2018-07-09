@@ -1,5 +1,5 @@
-query PostList {
-  allPosts(first: 5) {
+query PostList($first: Int, $last: Int, $after: Cursor, $before: Cursor) {
+  allPosts(first: $first, last: $last, after: $after, before: $before) {
     nodes {
       id
       topic
@@ -9,6 +9,12 @@ query PostList {
         id
         fullName
       }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
     }
   }
 }

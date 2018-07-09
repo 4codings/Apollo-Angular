@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <div *ngFor="let post of posts | async">
+  <div *ngFor="let post of posts">
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">{{post.headline}}</h5>
@@ -9,4 +9,16 @@
       </div>
     </div>
   </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" *ngIf="previousPagination" [ngClass]="{'disabled': previousPagination.disabled}" >
+        <a class="page-link" href="{{previousPagination.url}}" tabindex="-1">Previous</a>
+      </li>
+      <li class="page-item disabled"><a class="page-link" href="#">Current</a></li>
+      <li class="page-item" *ngIf="nextPagination" [ngClass]="{'disabled': nextPagination.disabled}" >
+        <a class="page-link" href="{{nextPagination.url}}">Next</a>
+      </li>
+    </ul>
+  </nav>
 </div>
