@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs/Observable';
 declare var require: any
-const PostList = require('graphql-tag/loader!./list.component.graphql')
+const PostList = require('graphql-tag/loader!./article-list.component.graphql')
 import { PostListQuery } from '../gen/apollo-types'
 
 const DEFAULT_SIZE = 8;
@@ -24,11 +24,11 @@ class Page {
 const max = (x, y) => (x > y) ? x : y
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  selector: 'app-article-list',
+  templateUrl: './article-list.component.html',
+  styleUrls: ['./article-list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ArticleListComponent implements OnInit {
   private posts: any[];
   private totalPosts: number;
   private pages: Page[];

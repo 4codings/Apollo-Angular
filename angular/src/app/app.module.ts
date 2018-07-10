@@ -7,17 +7,17 @@ import { NgModule } from '@angular/core';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { ListComponent } from './list/list.component';
 import { ArticleComponent } from './article/article.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AuthorComponent } from './author/author.component';
+import { ArticleListComponent } from './article-list/article-list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListComponent,
     ArticleComponent,
+    ArticleListComponent,
     AuthorComponent,
   ],
   imports: [

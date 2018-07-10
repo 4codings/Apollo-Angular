@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ListComponent } from './list/list.component';
 import { ArticleComponent } from './article/article.component';
+import { ArticleListComponent } from './article-list/article-list.component';
 import { AuthorComponent } from './author/author.component';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '',            component: ListComponent },
-  { path: 'articles',    component: ListComponent },
+  { path: '',            component: ArticleListComponent },
+  { path: 'articles',    component: ArticleListComponent },
   { path: 'article/:id', component: ArticleComponent },
   { path: 'author/:id',  component: AuthorComponent }
 ]
