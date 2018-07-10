@@ -1,19 +1,23 @@
-query PostList($offset: Int, $first: Int) {
+query PostList($offset: Int!, $first: Int!) {
   allPosts(offset: $offset, first: $first) {
     nodes {
-      id
-      topic
-      headline
-      summary
-      personByAuthorId {
-        id
-        fullName
-      }
+      ...postFields
     }
     pageInfo {
       hasNextPage
       hasPreviousPage
     }
     totalCount
+  }
+}
+
+fragment postFields on Post {
+  id
+  topic
+  headline
+  summary
+  personByAuthorId {
+    id
+    fullName
   }
 }

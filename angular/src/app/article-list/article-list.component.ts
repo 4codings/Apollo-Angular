@@ -4,7 +4,7 @@ import { Apollo } from 'apollo-angular';
 
 declare var require: any
 const PostList = require('graphql-tag/loader!./article-list.component.graphql')
-import { PostListQuery } from '../gen/apollo-types'
+import { PostListQuery, PostListQueryVariables } from '../gen/apollo-types'
 
 const DEFAULT_SIZE = 8;
 
@@ -17,7 +17,7 @@ class Page {
 
   disabled: boolean
   text: string
-  queryParams: {first: number, offset: number}
+  queryParams: PostListQueryVariables
 }
 
 const max = (x, y) => (x > y) ? x : y

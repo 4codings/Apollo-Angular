@@ -1,4 +1,4 @@
-query AuthorList($after: Cursor, $first: Int) {
+query AuthorList($after: Cursor, $first: Int!) {
   allPeople(after: $after, first: $first) {
     nodes {
       id
