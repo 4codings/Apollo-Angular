@@ -13,8 +13,7 @@ class Page {
   constructor(disabled: boolean, text: string, first: number, offset: number) {
     this.disabled = disabled,
     this.text = text
-    const urlObj = {first: first, offset: offset};
-    this.url = "?" + Object.keys(urlObj).map(key => key + '=' + urlObj[key]).join('&')
+    this.url = `?first=${first}&offset=${offset}`
   }
 
   disabled: boolean
@@ -31,10 +30,10 @@ const max = (x, y) => (x > y) ? x : y
 })
 export class ListComponent implements OnInit {
   private posts: any[];
-  private pages: object[];
   private totalPosts: number;
-  private previousPage: object;
-  private nextPage: object;
+  private pages: Page[];
+  private previousPage: Page;
+  private nextPage: Page;
 
   constructor(
     private apollo: Apollo,
@@ -59,10 +58,10 @@ export class ListComponent implements OnInit {
           this.posts = data.allPosts.nodes
           this.totalPosts = data.allPosts.totalCount
           const noPages = Math.ceil(this.totalPosts / size)
-          this.pages = Array(noPages).fill().map(
+          this.pages = Array(noPages).fill(0).map(
             (_, i) => new Page(
               i * size == offset,
-              i + 1,
+              (i + 1).toString(),
               size,
               i * size
             )
