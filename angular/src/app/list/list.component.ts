@@ -13,12 +13,12 @@ class Page {
   constructor(disabled: boolean, text: string, first: number, offset: number) {
     this.disabled = disabled,
     this.text = text
-    this.url = `?first=${first}&offset=${offset}`
+    this.queryParams = {first: first, offset: offset}
   }
 
   disabled: boolean
   text: string
-  url: string
+  queryParams: {first: number, offset: number}
 }
 
 const max = (x, y) => (x > y) ? x : y
