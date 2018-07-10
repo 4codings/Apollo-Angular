@@ -36,7 +36,6 @@ export class AuthorComponent implements OnInit {
         this.author = data.personById;
         this.loading = loading;
       });
-    console.log(this.querySubscription)
   }
 
   ngOnDestroy() {
