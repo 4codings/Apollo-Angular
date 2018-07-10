@@ -1,5 +1,5 @@
-query PostList($first: Int, $last: Int, $after: Cursor, $before: Cursor) {
-  allPosts(first: $first, last: $last, after: $after, before: $before) {
+query PostList($offset: Int, $first: Int) {
+  allPosts(offset: $offset, first: $first) {
     nodes {
       id
       topic
@@ -11,10 +11,9 @@ query PostList($first: Int, $last: Int, $after: Cursor, $before: Cursor) {
       }
     }
     pageInfo {
-      startCursor
-      endCursor
       hasNextPage
       hasPreviousPage
     }
+    totalCount
   }
 }

@@ -3,12 +3,26 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 declare var require: any
 const PostList = require('graphql-tag/loader!./list.component.graphql')
 import { PostListQuery } from '../gen/apollo-types'
 
-const DEFAULT_LIMIT = 5
+const DEFAULT_SIZE = 8;
+
+class Page {
+  constructor(disabled: boolean, text: string, first: number, offset: number) {
+    this.disabled = disabled,
+    this.text = text
+    const urlObj = {first: first, offset: offset};
+    this.url = "?" + Object.keys(urlObj).map(key => key + '=' + urlObj[key]).join('&')
+  }
+
+  disabled: boolean
+  text: string
+  url: string
+}
+
+const max = (x, y) => (x > y) ? x : y
 
 @Component({
   selector: 'app-list',
@@ -16,62 +30,57 @@ const DEFAULT_LIMIT = 5
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  posts: any[];
-  previousPagination: any;
-  nextPagination: any;
+  private posts: any[];
+  private pages: object[];
+  private totalPosts: number;
+  private previousPage: object;
+  private nextPage: object;
 
   constructor(
     private apollo: Apollo,
     private route: ActivatedRoute
   ) { }
 
-  pagination(disabled: boolean, urlParams: object) {
-    return {
-      disabled: disabled,
-      url: "?" + Object.keys(urlParams).map(key => key + '=' + urlParams[key]).join('&')
-    }
-  }
-
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const first  = +params['first'] || null,
-            last   = +params['last'] || null,
-            after  = params['after'] || null,
-            before = params['before'] || null
-
-      const overrideFirst = (!first && !last && !after && !before) ? DEFAULT_LIMIT : first;
+      const size   = +params['first'] || DEFAULT_SIZE,
+            offset = +params['offset'] || 0
 
       this.apollo
         .watchQuery<PostListQuery>({
           query: PostList,
           variables: {
-            first: overrideFirst,
-            last: last,
-            after: after,
-            before: before
+            first: size,
+            offset: offset
           }
         })
         .valueChanges
         .subscribe( ({data}) => {
           this.posts = data.allPosts.nodes
+          this.totalPosts = data.allPosts.totalCount
+          const noPages = Math.ceil(this.totalPosts / size)
+          this.pages = Array(noPages).fill().map(
+            (_, i) => new Page(
+              i * size == offset,
+              i + 1,
+              size,
+              i * size
+            )
+          )
 
-          const pageInfo = data.allPosts.pageInfo;
-          const number = first || last || DEFAULT_LIMIT;
+          this.previousPage = new Page(
+            !data.allPosts.pageInfo.hasPreviousPage,
+            "",
+            size,
+            max(offset - size, 0)
+          )
 
-          this.previousPagination = this.pagination(
-            !pageInfo.hasPreviousPage,
-            {
-              last: number,
-              before: pageInfo.startCursor
-            }
-          );
-          this.nextPagination = this.pagination(
-            !pageInfo.hasNextPage,
-            {
-              first: number,
-              after: pageInfo.endCursor
-            }
-          );
+          this.nextPage = new Page(
+            !data.allPosts.pageInfo.hasNextPage,
+            "",
+            size,
+            offset + size
+          )
         });
     });
   }
