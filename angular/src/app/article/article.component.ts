@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { Apollo } from 'apollo-angular';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+
 declare var require: any
 const Post = require('graphql-tag/loader!./article.component.graphql')
 import { PostQuery } from '../gen/apollo-types'
@@ -14,8 +12,9 @@ import { PostQuery } from '../gen/apollo-types'
   styleUrls: ['./article.component.css']
 })
 export class ArticleComponent implements OnInit {
-  loading: boolean;
-  post: any;
+  private loading: boolean;
+  private post: any;
+
   private querySubscription: any;
 
   constructor(

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
-import { Observable } from 'rxjs/Observable';
 
 declare var require: any
 const AuthorList = require('graphql-tag/loader!./author-list.component.graphql')
@@ -14,9 +13,11 @@ const FETCH_SIZE = 4
   styleUrls: ['./author-list.component.css']
 })
 export class AuthorListComponent implements OnInit {
-  feedQuery: QueryRef<AuthorListQuery>;
-  authors: object[];
-  pageInfo: {endCursor: string, hasNextPage: boolean}
+  private authors: object[];
+  private pageInfo: {endCursor: string, hasNextPage: boolean}
+
+  private querySubscription: any;
+  private feedQuery: QueryRef<AuthorListQuery>;
 
   constructor(
     private apollo: Apollo,
@@ -31,7 +32,7 @@ export class AuthorListComponent implements OnInit {
       }
     })
 
-    this.feedQuery
+    this.querySubscription = this.feedQuery
       .valueChanges
       .subscribe(({data}) => {
         this.authors = data.allPeople.nodes
@@ -49,12 +50,16 @@ export class AuthorListComponent implements OnInit {
         if (!fetchMoreResult) { return prev }
         return Object.assign({}, prev, {
           allPeople: {
-            ...prev.allPeople
+            ...prev.allPeople,
             nodes: [...prev.allPeople.nodes, ...fetchMoreResult.allPeople.nodes],
             pageInfo: fetchMoreResult.allPeople.pageInfo,
           }
         })
       }
     })
+  }
+
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
   }
 }

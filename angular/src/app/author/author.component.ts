@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { Apollo } from 'apollo-angular';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+
 declare var require: any
 const Author = require('graphql-tag/loader!./author.component.graphql')
 import { AuthorQuery } from '../gen/apollo-types'
@@ -14,8 +12,9 @@ import { AuthorQuery } from '../gen/apollo-types'
   styleUrls: ['./author.component.css']
 })
 export class AuthorComponent implements OnInit {
-  loading: boolean;
-  author: any;
+  private loading: boolean;
+  private author: object;
+
   private querySubscription: any;
 
   constructor(
@@ -37,6 +36,7 @@ export class AuthorComponent implements OnInit {
         this.author = data.personById;
         this.loading = loading;
       });
+    console.log(this.querySubscription)
   }
 
   ngOnDestroy() {

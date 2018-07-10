@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { Apollo } from 'apollo-angular';
+
 declare var require: any
 const PostList = require('graphql-tag/loader!./article-list.component.graphql')
 import { PostListQuery } from '../gen/apollo-types'
@@ -34,6 +34,8 @@ export class ArticleListComponent implements OnInit {
   private previousPage: Page;
   private nextPage: Page;
 
+  private querySubscription: any;
+
   constructor(
     private apollo: Apollo,
     private route: ActivatedRoute
@@ -44,7 +46,7 @@ export class ArticleListComponent implements OnInit {
       const size   = +params['first'] || DEFAULT_SIZE,
             offset = +params['offset'] || 0
 
-      this.apollo
+      this.querySubscription = this.apollo
         .watchQuery<PostListQuery>({
           query: PostList,
           variables: {
@@ -81,5 +83,9 @@ export class ArticleListComponent implements OnInit {
           )
         });
     });
+  }
+
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
   }
 }
