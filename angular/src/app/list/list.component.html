@@ -3,9 +3,9 @@
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">{{post.headline}}</h5>
-        <a href="author/{{post.personByAuthorId.id}}"*ngIf="post.personByAuthorId.fullName" class="mb-2">by {{post.personByAuthorId.fullName}}</a>
+        <a [routerLink]="['/author', post.personByAuthorId.id]" *ngIf="post.personByAuthorId.fullName" class="mb-2">by {{post.personByAuthorId.fullName}}</a>
         <p class="card-text"></p>
-        <a href="article/{{post.id}}" class="card-link">{{post.summary}}</a>
+        <a [routerLink]="['/article', post.id]" class="card-link">{{post.summary}}</a>
       </div>
     </div>
   </div>

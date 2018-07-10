@@ -6,9 +6,9 @@
         <h3 class="card-title">{{author.firstName}} {{author.lastName}}</h3>
         <h6 class="card-subtitle mb-2 text-muted">Joined {{ author.createdAt | date:'fullDate' }}</h6>
         <p>{{author.about}}</p>
-        <p><b>Latest: </b><a href="article/{{author.latestPost.id}}" class="card-link">{{author.latestPost.headline}}</a></p>
+        <p><b>Latest: </b><a [routerLink]="['/article', author.latestPost.id]" class="card-link">{{author.latestPost.headline}}</a></p>
       </div>
-      <a href="/" class="card-link">Home</a>
+      <a [routerLink]="['/']" class="card-link">Home</a>
     </div>
   </div>
 </div>
