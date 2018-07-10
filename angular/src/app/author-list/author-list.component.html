@@ -1,0 +1,17 @@
+<div class="container mt-5">
+  <div class="row mb-3">
+    <div *ngFor="let author of authors" class="col-sm-3">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{author.fullName || "[Blank Name]"}}</h5>
+          <p class="card-text">{{ author.createdAt | date:'mediumDate' }} <a [routerLink]="['/author', author.id]" class="card-link mb-2">(Link)</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center" *ngIf="pageInfo">
+    <button *ngIf="pageInfo.hasNextPage" type="button" class="btn btn-primary" (click)="fetchMore()">Fetch</button>
+    <button *ngIf="!pageInfo.hasNextPage" disabled type="button" class="btn btn-primary">Fetch</button>
+  </div>
+</div>

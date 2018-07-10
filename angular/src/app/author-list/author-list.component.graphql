@@ -1,0 +1,14 @@
+query AuthorList($after: Cursor, $first: Int) {
+  allPeople(after: $after, first: $first) {
+    nodes {
+      id
+      fullName
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    totalCount
+  }
+}

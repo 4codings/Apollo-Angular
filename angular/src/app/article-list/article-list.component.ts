@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Apollo } from 'apollo-angular';
-import { Observable } from 'rxjs/Observable';
 declare var require: any
 const PostList = require('graphql-tag/loader!./article-list.component.graphql')
 import { PostListQuery } from '../gen/apollo-types'

@@ -7,10 +7,11 @@ import { NgModule } from '@angular/core';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { ArticleComponent } from './article/article.component';
 import { AppRoutingModule } from './/app-routing.module';
-import { AuthorComponent } from './author/author.component';
+import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article-list/article-list.component';
+import { AuthorComponent } from './author/author.component';
+import { AuthorListComponent } from './author-list/author-list.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { ArticleListComponent } from './article-list/article-list.component';
     ArticleComponent,
     ArticleListComponent,
     AuthorComponent,
+    AuthorListComponent,
   ],
   imports: [
     BrowserModule,
