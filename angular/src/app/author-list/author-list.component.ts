@@ -48,13 +48,14 @@ export class AuthorListComponent implements OnInit {
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) { return prev }
-        return Object.assign({}, prev, {
+        return {
+          ...prev,
           allPeople: {
             ...prev.allPeople,
             nodes: [...prev.allPeople.nodes, ...fetchMoreResult.allPeople.nodes],
             pageInfo: fetchMoreResult.allPeople.pageInfo,
           }
-        })
+        }
       }
     })
   }
