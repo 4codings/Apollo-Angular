@@ -8,13 +8,7 @@ import { PostListQuery, PostListQueryVariables, postFieldsFragment } from '../ge
 
 const DEFAULT_SIZE = 8;
 
-class Page {
-  constructor(disabled: boolean, text: string, first: number, offset: number) {
-    this.disabled = disabled,
-    this.text = text
-    this.queryParams = {first: first, offset: offset}
-  }
-
+interface Page {
   disabled: boolean
   text: string
   queryParams: PostListQueryVariables
@@ -45,47 +39,52 @@ export class ArticleListComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const size   = +params['first']  || DEFAULT_SIZE,
-            offset = +params['offset'] || 0
+      const qParams: PostListQueryVariables = {
+        first:  +params['first']  || DEFAULT_SIZE,
+        offset: +params['offset'] || 0,
+        search:  params['search'] || ""
+      }
 
-      this.search =  params['search'] || ""
+      this.search = qParams.search
 
       this.querySubscription = this.apollo
         .watchQuery<PostListQuery>({
           query: PostList,
-          variables: {
-            search: this.search,
-            first: size,
-            offset: offset
-          }
+          variables: qParams
         })
         .valueChanges
         .subscribe( ({data}) => {
           this.posts = data.searchPosts.nodes
           this.totalPosts = data.searchPosts.totalCount
-          const noPages = Math.ceil(this.totalPosts / size)
-          this.pages = Array(noPages).fill(0).map(
-            (_, i) => new Page(
-              i * size == offset,
-              (i + 1).toString(),
-              size,
-              i * size
-            )
-          )
+          const numPages = Math.ceil(this.totalPosts / qParams.first)
+          this.pages = Array(numPages).fill(0).map((_, i) => {
+            return {
+              disabled: (i * qParams.first == qParams.offset),
+              text: (i + 1).toString(),
+              queryParams: {
+                ...qParams,
+                offset: i * qParams.first
+              }
+            }
+          })
 
-          this.previousPage = new Page(
-            !data.searchPosts.pageInfo.hasPreviousPage,
-            "",
-            size,
-            max(offset - size, 0)
-          )
+          this.previousPage = {
+            disabled: !data.searchPosts.pageInfo.hasPreviousPage,
+            text: "",
+            queryParams: {
+              ...qParams,
+              offset: max(qParams.offset - qParams.first, 0)
+             }
+          }
 
-          this.nextPage = new Page(
-            !data.searchPosts.pageInfo.hasNextPage,
-            "",
-            size,
-            offset + size
-          )
+          this.nextPage = {
+            disabled: !data.searchPosts.pageInfo.hasNextPage,
+            text: "",
+            queryParams: {
+              ...qParams,
+              offset: qParams.offset + qParams.first
+            }
+          }
         });
     });
   }
