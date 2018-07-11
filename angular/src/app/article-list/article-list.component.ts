@@ -30,6 +30,8 @@ const max = (x, y) => (x > y) ? x : y
 export class ArticleListComponent implements OnInit {
   private posts: postFieldsFragment[];
   private totalPosts: number;
+  private search: String = "";
+
   private pages: Page[];
   private previousPage: Page;
   private nextPage: Page;
@@ -43,21 +45,24 @@ export class ArticleListComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const size   = +params['first'] || DEFAULT_SIZE,
+      const size   = +params['first']  || DEFAULT_SIZE,
             offset = +params['offset'] || 0
+
+      this.search =  params['search'] || ""
 
       this.querySubscription = this.apollo
         .watchQuery<PostListQuery>({
           query: PostList,
           variables: {
+            search: this.search,
             first: size,
             offset: offset
           }
         })
         .valueChanges
         .subscribe( ({data}) => {
-          this.posts = data.allPosts.nodes
-          this.totalPosts = data.allPosts.totalCount
+          this.posts = data.searchPosts.nodes
+          this.totalPosts = data.searchPosts.totalCount
           const noPages = Math.ceil(this.totalPosts / size)
           this.pages = Array(noPages).fill(0).map(
             (_, i) => new Page(
@@ -69,14 +74,14 @@ export class ArticleListComponent implements OnInit {
           )
 
           this.previousPage = new Page(
-            !data.allPosts.pageInfo.hasPreviousPage,
+            !data.searchPosts.pageInfo.hasPreviousPage,
             "",
             size,
             max(offset - size, 0)
           )
 
           this.nextPage = new Page(
-            !data.allPosts.pageInfo.hasNextPage,
+            !data.searchPosts.pageInfo.hasNextPage,
             "",
             size,
             offset + size

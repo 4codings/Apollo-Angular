@@ -1,4 +1,8 @@
 <div class="container mt-5">
+  <div>
+    <p>Found {{totalPosts}} Posts <span *ngIf="search">containing "{{search}}"</span></p>
+  </div>
+
   <div *ngFor="let post of posts">
     <div class="card mb-3">
       <div class="card-body">
@@ -9,8 +13,6 @@
       </div>
     </div>
   </div>
-
-  <div><p>{{totalPosts}} Posts</p></div>
 
   <nav aria-label="Post navigation">
     <ul class="pagination">
