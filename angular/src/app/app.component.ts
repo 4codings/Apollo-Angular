@@ -13,9 +13,9 @@ export class AppComponent {
     private router: Router,
   ) { }
 
-  search(query: string) {
+  search(searchInput: string) {
     this.router.navigate(["/articles"], {
-      queryParams: {"search": query}
+      queryParams: {"search": searchInput}
     })
     return false
   }
