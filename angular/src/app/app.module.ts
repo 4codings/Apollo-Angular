@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
@@ -15,7 +16,8 @@ import { AuthorComponent } from './author/author.component';
 import { AuthorListComponent } from './author-list/author-list.component';
 import { LoginComponent } from './login/login.component';
 
-import { AuthenticateService } from './service/authenticate.service'
+import { AuthenticateService } from './service/authenticate.service';
+import { HeaderComponent } from './header/header.component'
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import { AuthenticateService } from './service/authenticate.service'
     AuthorComponent,
     AuthorListComponent,
     LoginComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,9 +42,9 @@ import { AuthenticateService } from './service/authenticate.service'
 })
 export class AppModule {
   constructor(
-    apollo: Apollo,
-    httpLink: HttpLink,
-    authenticateService: AuthenticateService
+    private apollo: Apollo,
+    private httpLink: HttpLink,
+    private authenticateService: AuthenticateService
   ) {
     const http = httpLink.create({
       uri: `http://${environment.apiHost}:${environment.apiPort}/graphql`
@@ -49,6 +52,10 @@ export class AppModule {
 
     const auth = setContext((_, { headers }) => {
       const token = this.authenticateService.getToken()
+      if (!headers) {
+        headers = new HttpHeaders()
+      }
+
       if (token) {
         return { headers: headers.append('Authorization', `Bearer ${token}`) }
       } else {

@@ -1,0 +1,10 @@
+query CurrentPerson {
+  currentPerson {
+    ...currentPersonFields
+  }
+}
+
+fragment currentPersonFields on Person {
+  id
+  fullName
+}

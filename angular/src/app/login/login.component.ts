@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthenticateService } from '../service/authenticate.service'
 
@@ -10,11 +11,18 @@ import { AuthenticateService } from '../service/authenticate.service'
 export class LoginComponent implements OnInit {
 
   constructor(
-    private authenticateService: AuthenticateService
+    private authenticateService: AuthenticateService,
+    private router: Router,
+    private ngZone: NgZone
   ) { }
 
   ngOnInit() {
   }
 
-  login = authenticateService.login
+  login(email: string, password: string) {
+    this.authenticateService.login(email, password,
+      () => this.ngZone.run(() => this.router.navigate(["/"]))
+    )
+    return false;
+  }
 }

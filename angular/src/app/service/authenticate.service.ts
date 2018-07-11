@@ -3,9 +3,7 @@ import { Apollo } from 'apollo-angular';
 
 declare var require: any
 const Authenticate = require('graphql-tag/loader!./authenticate.service.graphql')
-import { AuthenticateMutation } from '../gen/apollo-types'
-
-const AUTH_TOKEN = "authToken"
+import { AuthenticateMutation, AuthenticateMutationVariables } from '../gen/apollo-types'
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +13,23 @@ export class AuthenticateService {
     private apollo: Apollo,
   ) { }
 
-  setToken(token: string | null) {
-    localStorage.setItem(AUTH_TOKEN, token)
+  setToken(token: string) {
+    localStorage.setItem(this.AUTH_TOKEN, token)
   }
 
-  getToken() {
-    return localStorage.getItem(AUTH_TOKEN)
+  getToken(): string {
+    return localStorage.getItem(this.AUTH_TOKEN)
   }
 
-  login(email: String, password: String) {
+  clearToken() {
+    localStorage.removeItem(this.AUTH_TOKEN)
+  }
+
+  AUTH_TOKEN = "authToken"
+
+  login(email: string, password: string, callback: () => void) {
     const input: AuthenticateMutationVariables = {
-      email: email
+      email: email,
       password: password
     }
 
@@ -33,16 +37,16 @@ export class AuthenticateService {
       mutation: Authenticate,
       variables: input
     }).subscribe(({ data }) => {
-      setToken(data.authenticate.jwtToken)
+      this.setToken(data.authenticate.jwtToken)
+      callback()
       console.log('got data', data.authenticate.jwtToken);
-    },(error) => {
+    }, (error) => {
       console.log('there was an error sending the query', error);
     });
-    return false;
   }
 
   logout() {
-    setToken(null)
+    this.clearToken()
     this.apollo.getClient().resetStore();
   }
 }
