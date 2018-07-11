@@ -4,6 +4,7 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloModule, Apollo } from 'apollo-angular';
 import { NgModule } from '@angular/core';
+import { setContext } from 'apollo-link-context';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -13,6 +14,8 @@ import { ArticleListComponent } from './article-list/article-list.component';
 import { AuthorComponent } from './author/author.component';
 import { AuthorListComponent } from './author-list/author-list.component';
 import { LoginComponent } from './login/login.component';
+
+import { AuthenticateService } from './service/authenticate.service'
 
 
 @NgModule({
@@ -31,20 +34,30 @@ import { LoginComponent } from './login/login.component';
     ApolloModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthenticateService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(
     apollo: Apollo,
-    httpLink: HttpLink
+    httpLink: HttpLink,
+    authenticateService: AuthenticateService
   ) {
-    const uri = `http://${environment.apiHost}:${environment.apiPort}/graphql`;
+    const http = httpLink.create({
+      uri: `http://${environment.apiHost}:${environment.apiPort}/graphql`
+    })
+
+    const auth = setContext((_, { headers }) => {
+      const token = this.authenticateService.getToken()
+      if (token) {
+        return { headers: headers.append('Authorization', `Bearer ${token}`) }
+      } else {
+        return { headers }
+      }
+    })
 
     apollo.create({
-      link: httpLink.create({
-        uri: uri
-      }),
+      link: auth.concat(http),
       cache: new InMemoryCache()
     })
   }
