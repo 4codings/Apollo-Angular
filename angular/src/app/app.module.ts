@@ -12,6 +12,7 @@ import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { AuthorComponent } from './author/author.component';
 import { AuthorListComponent } from './author-list/author-list.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { AuthorListComponent } from './author-list/author-list.component';
     ArticleListComponent,
     AuthorComponent,
     AuthorListComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
