@@ -1,4 +1,4 @@
-query PostList($search: String, $offset: Int!, $first: Int!) {
+query PostList($search: String!, $offset: Int!, $first: Int!) {
   searchPosts(search: $search, offset: $offset, first: $first) {
     nodes {
       ...postFields
