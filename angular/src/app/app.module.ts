@@ -16,7 +16,7 @@ import { AuthorComponent } from './author/author.component';
 import { AuthorListComponent } from './author-list/author-list.component';
 import { LoginComponent } from './login/login.component';
 
-import { AuthenticateService } from './service/authenticate.service';
+import { AuthService } from './service/auth.service';
 import { HeaderComponent } from './header/header.component'
 
 
@@ -37,34 +37,36 @@ import { HeaderComponent } from './header/header.component'
     ApolloModule,
     AppRoutingModule
   ],
-  providers: [AuthenticateService],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(
     private apollo: Apollo,
     private httpLink: HttpLink,
-    private authenticateService: AuthenticateService
+    private authService: AuthService
   ) {
     const http = httpLink.create({
       uri: `http://${environment.apiHost}:${environment.apiPort}/graphql`
     })
 
-    const auth = setContext((_, { headers }) => {
-      const token = this.authenticateService.getToken()
-      if (!headers) {
-        headers = new HttpHeaders()
-      }
+    const token = this.authService.getToken()
+    let auth = null
 
-      if (token) {
+    if (token) {
+      auth = setContext((_, { headers }) => {
+        if (!headers) {
+          headers = new HttpHeaders()
+        }
+
         return { headers: headers.append('Authorization', `Bearer ${token}`) }
-      } else {
-        return { headers }
-      }
-    })
+      }).concat(http)
+    } else {
+      auth = http
+    }
 
     apollo.create({
-      link: auth.concat(http),
+      link: auth,
       cache: new InMemoryCache()
     })
   }

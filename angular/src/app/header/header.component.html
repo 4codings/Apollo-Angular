@@ -13,8 +13,8 @@
         <a class="nav-link" [routerLink]="['/authors']">Authors</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="!currentPerson" class="nav-link" [routerLink]="['/login']">Login</a>
-        <a *ngIf="currentPerson" class="nav-link" (click)="logout()">Logout</a>
+        <a *ngIf="!isLoggedIn()" class="nav-link" [routerLink]="['/login']">Login</a>
+        <a *ngIf="isLoggedIn()" class="nav-link" (click)="logout()">Logout</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">

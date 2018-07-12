@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 
-import { AuthenticateService } from '../service/authenticate.service';
-declare var require: any
-const CurrentPerson = require('graphql-tag/loader!./current.person.graphql')
-import { CurrentPersonQuery, currentPersonFieldsFragment } from '../gen/apollo-types'
+import { AuthService } from '../service/auth.service';
+import { currentPersonFieldsFragment } from '../gen/apollo-types'
+
 
 @Component({
   selector: 'app-header',
@@ -13,37 +12,30 @@ import { CurrentPersonQuery, currentPersonFieldsFragment } from '../gen/apollo-t
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  private currentPerson: currentPersonFieldsFragment | null = null
   private querySubscription: any;
+  private currentPerson: currentPersonFieldsFragment;
 
   constructor(
     private apollo: Apollo,
     private router: Router,
-    private authenticateService: AuthenticateService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-    const token = this.authenticateService.getToken()
-    if (token) {
-      this.querySubscription = this.apollo
-        .watchQuery<CurrentPersonQuery>({
-          query: CurrentPerson
-        })
-        .valueChanges
-        .subscribe( ({data}) => {
-          this.currentPerson = data.currentPerson
-        }, (error) => {
-          console.log("Could not fetch current person")
-        });
+    if (this.isLoggedIn()) {
+      this.authService.currentPerson().subscribe(p => this.currentPerson = p)
     }
   }
 
-  logout() {
-    this.authenticateService.clearToken()
-    this.currentPerson = null
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn()
   }
 
-  search(searchInput: string) {
+  logout(): void {
+    this.authService.logout()
+  }
+
+  search(searchInput: string): boolean {
     this.router.navigate(["/articles"], {
       queryParams: {"search": searchInput}
     })

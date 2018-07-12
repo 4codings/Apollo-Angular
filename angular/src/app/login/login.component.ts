@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticateService } from '../service/authenticate.service'
+import { AuthService } from '../service/auth.service'
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ import { AuthenticateService } from '../service/authenticate.service'
 export class LoginComponent implements OnInit {
 
   constructor(
-    private authenticateService: AuthenticateService,
+    private authenticateService: AuthService,
     private router: Router,
     private ngZone: NgZone
   ) { }
