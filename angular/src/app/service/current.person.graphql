@@ -6,5 +6,6 @@ query CurrentPerson {
 
 fragment currentPersonFields on Person {
   id
+  firstName
   fullName
 }
