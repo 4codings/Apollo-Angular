@@ -1,5 +1,5 @@
 <p *ngIf="alertService.alertMessage">
-  <ngb-alert [type]="alert" (close)="alertService.clearAlert()">
+  <ngb-alert [type]="'warning'" (close)="alertService.clearAlert()">
     {{alertService.alertMessage}}
   </ngb-alert>
 </p>
