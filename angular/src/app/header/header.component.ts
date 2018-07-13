@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 
+import { AlertService } from '../service/alert.service';
 import { AuthService } from '../service/auth.service';
 import { currentPersonFieldsFragment } from '../gen/apollo-types'
-
 
 @Component({
   selector: 'app-header',
@@ -18,7 +18,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private apollo: Apollo,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService,
   ) { }
 
   ngOnInit() {
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.authService.logout()
+    this.alertService.setAlert("Logged Out")
   }
 
   search(searchInput: string): boolean {

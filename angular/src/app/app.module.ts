@@ -17,7 +17,9 @@ import { AuthorListComponent } from './author-list/author-list.component';
 import { LoginComponent } from './login/login.component';
 
 import { AuthService } from './service/auth.service';
-import { HeaderComponent } from './header/header.component'
+import { AlertService } from './service/alert.service';
+import { HeaderComponent } from './header/header.component';
+import { AlertComponent } from './alert/alert.component';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { HeaderComponent } from './header/header.component'
     AuthorListComponent,
     LoginComponent,
     HeaderComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,7 @@ import { HeaderComponent } from './header/header.component'
     ApolloModule,
     AppRoutingModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AlertService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
