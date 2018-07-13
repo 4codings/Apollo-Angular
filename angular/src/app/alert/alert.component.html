@@ -1,6 +1,5 @@
-<div *ngIf="alertService.alertMessage" class="alert alert-warning alert-dismissible fade show" role="alert">
-  {{alertService.alertMessage}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+<p *ngIf="alertService.alertMessage">
+  <ngb-alert [type]="alert" (close)="alertService.clearAlert()">
+    {{alertService.alertMessage}}
+  </ngb-alert>
+</p>

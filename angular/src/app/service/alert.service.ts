@@ -10,7 +10,11 @@ export class AlertService {
 
   setAlert(alertMessage) {
     this.alertMessage = alertMessage;
-    setTimeout(() => this.alertMessage = "", this.delay)
+    setTimeout(this.clearAlert.bind(this), this.delay)
+  }
+
+  clearAlert() {
+    this.alertMessage = ""
   }
 
   constructor() { }

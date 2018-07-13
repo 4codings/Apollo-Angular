@@ -6,6 +6,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloModule, Apollo } from 'apollo-angular';
 import { NgModule } from '@angular/core';
 import { setContext } from 'apollo-link-context';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -38,7 +39,8 @@ import { AlertComponent } from './alert/alert.component';
     HttpClientModule,
     HttpLinkModule,
     ApolloModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot(),
   ],
   providers: [AuthService, AlertService],
   bootstrap: [AppComponent]
