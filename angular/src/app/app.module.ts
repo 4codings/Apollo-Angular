@@ -21,6 +21,7 @@ import { AuthService } from './service/auth.service';
 import { AlertService } from './service/alert.service';
 import { HeaderComponent } from './header/header.component';
 import { AlertComponent } from './alert/alert.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { AlertComponent } from './alert/alert.component';
     LoginComponent,
     HeaderComponent,
     AlertComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
