@@ -7,6 +7,11 @@
           <label for="firstName">First Name</label>
           <input type="text" class="form-control" id="firstName" placeholder="First Name" formControlName="firstName"/>
         </div>
+        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger">
+          <div *ngIf="firstName.errors.required">
+            First Name is required.
+          </div>
+        </div>
       </div>
 
       <div class="col-sm-6">

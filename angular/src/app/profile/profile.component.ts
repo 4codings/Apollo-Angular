@@ -49,6 +49,8 @@ export class ProfileComponent implements OnInit {
     this.resetForm()
   }
 
+  get firstName() { return this.profileForm.get('firstName') }
+
   submit() {
     const newProfile: currentProfileFieldsFragment = {
       ...this.profile,
