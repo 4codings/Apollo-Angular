@@ -1,17 +1,18 @@
 <div class="container mt-5">
-  <form *ngIf="profile">
+  <form *ngIf="profile" [formGroup]="profileForm" (ngSubmit)="submit()">
 
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" class="form-control" id="firstName"placeholder="First Name" value="{{profile.firstName}}"/>
+          <input type="text" class="form-control" id="firstName" placeholder="First Name" formControlName="firstName"/>
         </div>
       </div>
+
       <div class="col-sm-6">
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="text" class="form-control" id="lastName"placeholder="Last Name" value="{{profile.lastName}}"/>
+          <input type="text" class="form-control" id="lastName" placeholder="Last Name" formControlName="lastName"/>
         </div>
       </div>
     </div>
@@ -20,9 +21,12 @@
 
     <div class="form-group">
       <label for="about">About Me</label>
-      <textarea class="form-control" id="about" rows="3">{{profile.about}}</textarea>
+      <textarea class="form-control" id="about" rows="3" formControlName="about"></textarea>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="float-right">
+      <button [disabled]="profileForm.pristine" (click)="resetForm()" class="btn btn-secondary mr-3">Reset</button>
+      <button [disabled]="profileForm.pristine" type="submit" class="btn btn-primary">Submit</button>
+    </div>
   </form>
 </div>

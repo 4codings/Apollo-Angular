@@ -1,12 +1,15 @@
 import { HttpHeaders } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule }   from '@angular/forms';
+
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloModule, Apollo } from 'apollo-angular';
-import { NgModule } from '@angular/core';
 import { setContext } from 'apollo-link-context';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -43,6 +46,8 @@ import { ProfileComponent } from './profile/profile.component';
     ApolloModule,
     AppRoutingModule,
     NgbModule.forRoot(),
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [AuthService, AlertService],
   bootstrap: [AppComponent]
