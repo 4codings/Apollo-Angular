@@ -4,17 +4,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AlertService {
-  private alertMessage: string = "";
+  private message: string = "";
+  private type: string = "warning"
 
   delay = 2000; // milliseconds
 
-  setAlert(alertMessage) {
-    this.alertMessage = alertMessage;
+  setAlert(message, type="warning") {
+    this.message = message
+    this.type = type
     setTimeout(this.clearAlert.bind(this), this.delay)
   }
 
   clearAlert() {
-    this.alertMessage = ""
+    this.message = ""
   }
 
   constructor() { }
