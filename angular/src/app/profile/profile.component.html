@@ -1,3 +1,28 @@
-<p>
-  profile works!
-</p>
+<div class="container mt-5">
+  <form *ngIf="profile">
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" class="form-control" id="firstName"placeholder="First Name" value="{{profile.firstName}}"/>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" class="form-control" id="lastName"placeholder="Last Name" value="{{profile.lastName}}"/>
+        </div>
+      </div>
+    </div>
+
+    <p>Joined on {{profile.createdAt | date:'fullDate'}}</p>
+
+    <div class="form-group">
+      <label for="about">About Me</label>
+      <textarea class="form-control" id="about" rows="3">{{profile.about}}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

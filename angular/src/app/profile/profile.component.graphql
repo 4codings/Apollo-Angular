@@ -1,0 +1,21 @@
+query CurrentProfile {
+  currentPerson {
+    ...currentProfileFields
+  }
+}
+
+mutation UpdateProfile($input: UpdatePersonByIdInput!) {
+  updatePersonById(input: $input) {
+    person {
+      ...currentProfileFields
+    }
+  }
+}
+
+fragment currentProfileFields on Person {
+  id
+  firstName
+  lastName
+  about
+  createdAt
+}
