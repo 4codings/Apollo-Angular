@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 declare var require: any
 const { CurrentProfile, UpdateProfile } = require('graphql-tag/loader!./profile.component.graphql')
-import { CurrentProfileQuery, currentProfileFieldsFragment } from '../gen/apollo-types'
+import { CurrentProfileQuery, currentProfileFieldsFragment, PersonPatch } from '../gen/apollo-types'
 
 @Component({
   selector: 'app-profile',
@@ -45,17 +45,21 @@ export class ProfileComponent implements OnInit {
   }
 
   updateForm({data}) {
-    this.profile = data.currentPerson
-    this.resetForm()
+    if (data.currentPerson) {
+      const {__typename, ...profile} = data.currentPerson
+      this.profile = profile
+      this.resetForm()
+    }
+
   }
 
   get firstName() { return this.profileForm.get('firstName') }
 
   submit() {
-    const newProfile: currentProfileFieldsFragment = {
+    const newProfile: PersonPatch = {
       ...this.profile,
       ...this.profileForm.value
-     }
+    }
 
     this.apollo.mutate({
       mutation: UpdateProfile,
