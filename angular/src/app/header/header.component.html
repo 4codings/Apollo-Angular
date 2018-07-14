@@ -13,8 +13,18 @@
         <a class="nav-link" [routerLink]="['/authors']">Authors</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="!isLoggedIn()" class="nav-link" [routerLink]="['/login']">Login</a>
-        <a *ngIf="isLoggedIn()" class="nav-link" (click)="logout()">Logout <span *ngIf="currentPerson">({{currentPerson.firstName}})</span></a>
+        <div ngbDropdown class="d-inline-block">
+          <button *ngIf="!isLoggedIn()" class="btn btn-outline-primary" [routerLink]="['/login']">Login</button>
+          <div *ngIf="isLoggedIn()">
+            <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{currentPerson.firstName}}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button class="dropdown-item">New Post</button>
+              <button class="dropdown-item">Edit Profile</button>
+              <div class="dropdown-divider"></div>
+              <button (click)="logout()" class="dropdown-item">Logout</button>
+            </div>
+          </div>
+        </div>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
