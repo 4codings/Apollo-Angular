@@ -25,6 +25,7 @@ import { AlertService } from './service/alert.service';
 import { HeaderComponent } from './header/header.component';
 import { AlertComponent } from './alert/alert.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EditPostComponent } from './edit-post/edit-post.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { ProfileComponent } from './profile/profile.component';
     HeaderComponent,
     AlertComponent,
     ProfileComponent,
+    EditPostComponent,
   ],
   imports: [
     BrowserModule,

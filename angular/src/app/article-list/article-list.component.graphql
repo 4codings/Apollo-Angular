@@ -1,7 +1,7 @@
 query PostList($search: String!, $offset: Int!, $first: Int!) {
   searchPosts(search: $search, offset: $offset, first: $first) {
     nodes {
-      ...postFields
+      ...postFields2
     }
     pageInfo {
       hasNextPage
@@ -11,7 +11,7 @@ query PostList($search: String!, $offset: Int!, $first: Int!) {
   }
 }
 
-fragment postFields on Post {
+fragment postFields2 on Post {
   id
   topic
   headline

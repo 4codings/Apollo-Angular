@@ -1,0 +1,33 @@
+query QueryPost($id: Int!) {
+  postById(id: $id) {
+    ...Post
+  }
+}
+
+mutation CreatePost($input: CreatePostInput!) {
+  createPost(input: $input) {
+    post {
+      ...Post
+    }
+  }
+}
+
+mutation UpdatePost($input: UpdatePostByIdInput!) {
+  updatePostById(input: $input) {
+    post {
+      ...Post
+    }
+  }
+}
+
+fragment Post on Post {
+  id
+  headline
+  topic
+  body
+  createdAt
+  personByAuthorId {
+    id
+    fullName
+  }
+}
