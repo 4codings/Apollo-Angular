@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <form *ngIf="profile" [formGroup]="profileForm" (ngSubmit)="submit()">
+  <form [formGroup]="profileForm" (ngSubmit)="submit()">
 
     <div class="row">
       <div class="col-sm-6">
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <p>Joined on {{profile.createdAt | date:'fullDate'}}</p>
+    <p *ngIf="profile">Joined on {{profile.createdAt | date:'fullDate'}}</p>
 
     <div class="form-group">
       <label for="about">About Me</label>
