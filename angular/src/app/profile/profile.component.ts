@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(this.updateForm.bind(this));
   }
 
-  resetForm() {
+  private resetForm() {
     this.profileForm.reset({
       firstName: this.profile.firstName,
       lastName:  this.profile.lastName,
@@ -44,18 +44,17 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  updateForm({data}) {
+  private updateForm({data}) {
     if (data.currentPerson) {
       const {__typename, ...profile} = data.currentPerson
       this.profile = profile
       this.resetForm()
     }
-
   }
 
-  get firstName() { return this.profileForm.get('firstName') }
+  private get firstName() { return this.profileForm.get('firstName') }
 
-  submit() {
+  private submit() {
     const newProfile: PersonPatch = {
       ...this.profile,
       ...this.profileForm.value
