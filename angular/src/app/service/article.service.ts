@@ -7,7 +7,7 @@ import { FetchResult } from 'apollo-link'
 
 declare var require: any
 const { UpdatePost, CreatePost, QueryPost } = require('graphql-tag/loader!./article.service.graphql')
-import { QueryPostQuery, UpdatePostMutation, CreatePostMutation, PostFragment } from '../gen/apollo-types'
+import { QueryPostQuery, UpdatePostMutation, CreatePostMutation, PostInput, PostPatch, PostFragment } from '../gen/apollo-types'
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class ArticleService {
     private apollo: Apollo,
   ) { }
 
-  post(id: number): Observable<ApolloQueryResult<QueryPostQuery>> {
+  queryPost(id: number): Observable<ApolloQueryResult<QueryPostQuery>> {
     return this.apollo
       .watchQuery<QueryPostQuery>({
         query: QueryPost,
@@ -28,20 +28,20 @@ export class ArticleService {
       .valueChanges
   }
 
-  updatePost(post: PostFragment): Observable<FetchResult<QueryPostQuery>> {
+  updatePost(postPatch: PostPatch, optimisticResponse: PostFragment): Observable<FetchResult<QueryPostQuery>> {
     return this.apollo.mutate({
       mutation: UpdatePost,
       variables: {
         input: {
-          id: post.id,
-          postPatch: post
+          id: postPatch.id,
+          postPatch: postPatch
         }
       },
-      optimisticResponse: post
+      optimisticResponse: optimisticResponse
     })
   }
 
-  createpost(post: PostFragment): Observable<FetchResult<QueryPostQuery>> {
+  createPost(post: PostInput): Observable<FetchResult<QueryPostQuery>> {
     return this.apollo.mutate({
       mutation: CreatePost,
       variables: {

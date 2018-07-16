@@ -1,12 +1,16 @@
 query Author($id: Int!) {
   personById(id: $id) {
-    firstName
-    lastName
-    about
-    createdAt
-    latestPost {
-      id
-      headline
-    }
+    ...Person
+  }
+}
+
+fragment Person on Person {
+  firstName
+  lastName
+  about
+  createdAt
+  latestPost {
+    id
+    headline
   }
 }

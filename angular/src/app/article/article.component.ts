@@ -18,12 +18,12 @@ export class ArticleComponent implements OnInit {
   constructor(
     private apollo: Apollo,
     private route: ActivatedRoute,
-    private article: ArticleService
+    private article: ArticleService,
   ) { }
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.querySubscription = this.article.post(id)
+    this.querySubscription = this.article.queryPost(id)
       .subscribe( ({data, loading}) => {
         this.post = data.postById;
         this.loading = loading;

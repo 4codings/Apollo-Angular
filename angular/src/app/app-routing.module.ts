@@ -18,8 +18,8 @@ const routes: Routes = [
   { path: 'author/:id',  component: AuthorComponent },
   { path: 'login',       component: LoginComponent },
   { path: 'profile',     component: ProfileComponent },
-  { path: 'edit/:id',    component: EditPostComponent, data: { newPost: false } },
-  { path: 'edit',        component: EditPostComponent, data: { newPost: true } },
+  { path: 'edit/:id',    component: EditPostComponent, data: { isNew: false } },
+  { path: 'edit',        component: EditPostComponent, data: { isNew: true } },
 ]
 
 @NgModule({
