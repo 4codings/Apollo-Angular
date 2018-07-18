@@ -28,7 +28,7 @@ export class ArticleService {
       .valueChanges
   }
 
-  updatePost(postPatch: PostPatch, optimisticResponse: PostFragment): Observable<FetchResult<QueryPostQuery>> {
+  updatePost(postPatch: PostPatch, optimisticPost: PostFragment): Observable<FetchResult<UpdatePostMutation>> {
     return this.apollo.mutate({
       mutation: UpdatePost,
       variables: {
@@ -36,20 +36,30 @@ export class ArticleService {
           id: postPatch.id,
           postPatch: postPatch
         }
-      },
-      optimisticResponse: optimisticResponse
+      }
+      // optimisticResponse: { updatePostById: { post: optimisticPost } }
     })
   }
 
-  createPost(post: PostInput): Observable<FetchResult<QueryPostQuery>> {
+  createPost(post: PostFragment): Observable<FetchResult<CreatePostMutation>> {
+    // const optimisticResponse = {
+    //   __typename: 'Mutation',
+    //   createPost: {
+    //     __typename: 'Post'
+    //     post: {
+    //       ...post,
+    //     },
+    //   }
+    // }
+
     return this.apollo.mutate({
       mutation: CreatePost,
       variables: {
         input: {
           post: post
         }
-      },
-      optimisticResponse: post
+      }
+      // optimisticResponse: optimisticResponse
     })
   }
 }

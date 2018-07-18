@@ -21,13 +21,8 @@ mutation UpdatePost($input: UpdatePostByIdInput!) {
 }
 
 fragment Post on Post {
-  id
   headline
-  topic
   body
+  topic
   createdAt
-  personByAuthorId {
-    id
-    fullName
-  }
 }

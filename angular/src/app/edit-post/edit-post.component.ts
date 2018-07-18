@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { ArticleService } from '../service/article.service'
 import { AuthService } from '../service/auth.service';
-import { PostFragment, PostInput, PostTopic, PostPatch } from '../gen/apollo-types'
+import { PostFragment, PostTopic, PostPatch } from '../gen/apollo-types'
 
 @Component({
   selector: 'app-edit-post',
@@ -47,26 +47,26 @@ export class EditPostComponent implements OnInit {
 
     if (this.isNew) {
       this.post = {
-        id: null,
         headline: '',
         body: '',
         topic: null,
         createdAt: null,
-        personByAuthorId: null,
       }
       this.resetForm()
     } else {
       this.querySubscription = this.article.queryPost(this.id)
-        .subscribe(this.updateForm.bind(this))
+        .subscribe(({data}) => {
+          this.post = data.postById
+          this.resetForm()
+        })
     }
   }
 
   private updateForm({data}) {
     if (data.postById) {
-      const {__typename, ...post} = data.postById
-      this.post = post
-      this.resetForm()
+      this.post = data.postById
     }
+    this.resetForm()
   }
 
   private resetForm() {
@@ -78,7 +78,7 @@ export class EditPostComponent implements OnInit {
   }
 
   private createPost() {
-    const newPost: PostInput = {
+    const newPost: PostFragment = {
       authorId: this.currentPersonId,
       headline: this.post.headline,
       body:     this.post.body,
@@ -86,7 +86,9 @@ export class EditPostComponent implements OnInit {
       ...this.postForm.value
     }
     this.article.createPost(newPost)
-      .subscribe(this.updateForm.bind(this));
+      .subscribe(({data}) => {
+        this.resetForm()
+      });
   }
 
   private updatePost() {
@@ -94,8 +96,18 @@ export class EditPostComponent implements OnInit {
       ...this.post,
       ...this.postForm.value
     }
-    this.article.updatePost(this.postForm.value, optimisitcPost)
-      .subscribe(this.updateForm.bind(this));
+    const patch: PostPatch = {
+      ...this.postForm.value,
+      id: this.id
+    }
+
+    this.article.updatePost(patch, optimisitcPost)
+      .subscribe(({data}) => {
+        if (data.post) {
+          this.post = data.post
+          this.resetForm()
+        }
+      });
   }
 
   private submit() {
