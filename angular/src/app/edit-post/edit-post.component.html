@@ -22,8 +22,8 @@
     </div>
     <div class="float-right mb-5">
       <button [disabled]="postForm.pristine" type="button" class="btn btn-secondary mr-3" (click)="resetForm()">Reset</button>
-      <button [disabled]="postForm.pristine" *ngIf="newPost" type="submit" class="btn btn-primary">Add</button>
-      <button [disabled]="postForm.pristine" *ngIf="!newPost" type="submit" class="btn btn-primary">Save</button>
+      <button [disabled]="postForm.pristine" *ngIf="isNew" type="submit" class="btn btn-primary">Add</button>
+      <button [disabled]="postForm.pristine" *ngIf="!isNew" type="submit" class="btn btn-primary">Save</button>
     </div>
   </form>
 </div>
