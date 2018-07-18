@@ -64,13 +64,6 @@ export class EditPostComponent implements OnInit {
     }
   }
 
-  private updateForm({data}) {
-    if (data.postById) {
-      this.post = data.postById
-    }
-    this.resetForm()
-  }
-
   private resetForm() {
     this.postForm.reset({
       headline: this.post.headline,

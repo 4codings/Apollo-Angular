@@ -37,8 +37,7 @@ export class ProfileComponent implements OnInit {
       })
       .valueChanges
       .subscribe(({data}) => {
-        const {__typename, ...profile} = data.currentPerson
-        this.profile = profile
+        this.profile = data.currentPerson
         this.resetForm()
       });
   }
