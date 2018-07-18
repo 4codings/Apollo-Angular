@@ -42,15 +42,16 @@ export class ArticleService {
   }
 
   createPost(post: PostFragment): Observable<FetchResult<CreatePostMutation>> {
-    // const optimisticResponse = {
-    //   __typename: 'Mutation',
-    //   createPost: {
-    //     __typename: 'Post'
-    //     post: {
-    //       ...post,
-    //     },
-    //   }
-    // }
+    const optimisticResponse = {
+      createPost: {
+        __typename: 'CreatePostPayload',
+        post: {
+          __typename: 'Post'
+          ...post,
+          createdAt: String(new Date())
+        },
+      }
+    }
 
     return this.apollo.mutate({
       mutation: CreatePost,
@@ -58,8 +59,8 @@ export class ArticleService {
         input: {
           post: post
         }
-      }
-      // optimisticResponse: optimisticResponse
+      },
+      optimisticResponse: optimisticResponse
     })
   }
 }

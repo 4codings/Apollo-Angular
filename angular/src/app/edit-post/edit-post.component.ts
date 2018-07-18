@@ -4,6 +4,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { ArticleService } from '../service/article.service'
 import { AuthService } from '../service/auth.service';
+import { AlertService } from '../service/alert.service';
 import { PostFragment, PostTopic, PostPatch } from '../gen/apollo-types'
 
 @Component({
@@ -14,7 +15,7 @@ import { PostFragment, PostTopic, PostPatch } from '../gen/apollo-types'
 export class EditPostComponent implements OnInit {
   private loading: boolean;
   private post: PostFragment;
-  private postForm: FormGroup  // stores mutable values
+  private postForm: FormGroup;  // stores mutable values
   private querySubscription: any = null;
   private topics: any[];
   private isNew: boolean;
@@ -27,6 +28,7 @@ export class EditPostComponent implements OnInit {
     private article: ArticleService,
     private formBuilder: FormBuilder,
     private auth: AuthService,
+    private alert: AlertService,
   ) {
     this.postForm = this.formBuilder.group({
       headline: ['', Validators.required],
@@ -88,6 +90,7 @@ export class EditPostComponent implements OnInit {
     this.article.createPost(newPost)
       .subscribe(({data}) => {
         this.resetForm()
+        this.alert.setAlert("Added Post")
       });
   }
 
@@ -106,6 +109,7 @@ export class EditPostComponent implements OnInit {
         if (data.post) {
           this.post = data.post
           this.resetForm()
+          this.alert.setAlert("Updated Post")
         }
       });
   }
