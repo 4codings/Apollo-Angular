@@ -4,7 +4,7 @@ import { Apollo } from 'apollo-angular';
 
 declare var require: any
 const PostList = require('graphql-tag/loader!./article-list.component.graphql')
-import { PostListQuery, PostListQueryVariables, postFields2Fragment } from '../gen/apollo-types'
+import { PostListQuery, PostListQueryVariables, postListFragment } from '../gen/apollo-types'
 
 const DEFAULT_SIZE = 8;
 
@@ -22,7 +22,7 @@ const max = (x, y) => (x > y) ? x : y
   styleUrls: ['./article-list.component.css']
 })
 export class ArticleListComponent implements OnInit {
-  private posts: postFields2Fragment[];
+  private posts: postListFragment[];
   private totalPosts: number;
   private search: String = "";
 
