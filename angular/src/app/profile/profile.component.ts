@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { AlertService } from '../service/alert.service';
+
 declare var require: any
 const { CurrentProfile, UpdateProfile } = require('graphql-tag/loader!./profile.component.graphql')
 import { CurrentProfileQuery, currentProfileFieldsFragment, PersonPatch } from '../gen/apollo-types'
@@ -18,7 +20,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private apollo: Apollo,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private alert: AlertService,
   ) {
     this.profileForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -49,6 +52,7 @@ export class ProfileComponent implements OnInit {
       const {__typename, ...profile} = data.currentPerson
       this.profile = profile
       this.resetForm()
+      this.alert.setAlert("Updated Profile")
     }
   }
 
@@ -68,7 +72,15 @@ export class ProfileComponent implements OnInit {
           personPatch: newProfile
         }
       },
-      optimisticResponse: newProfile
+      optimisticResponse: {
+        updatePersonById: {
+          __typename: 'UpdatePersonPayload',
+          person: {
+            __typename: 'Person',
+            ...newProfile
+          }
+        }
+      }
     }).subscribe(this.updateForm.bind(this))
 
     return false;

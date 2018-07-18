@@ -88,7 +88,7 @@ export class EditPostComponent implements OnInit {
       ...this.postForm.value
     }
     this.article.createPost(newPost)
-      .subscribe(({data}) => {
+      .subscribe(() => {
         this.resetForm()
         this.alert.setAlert("Added Post")
       });
@@ -106,11 +106,9 @@ export class EditPostComponent implements OnInit {
 
     this.article.updatePost(patch, optimisitcPost)
       .subscribe(({data}) => {
-        if (data.post) {
-          this.post = data.post
-          this.resetForm()
-          this.alert.setAlert("Updated Post")
-        }
+        this.post = data.updatePostById.post
+        this.resetForm()
+        this.alert.setAlert("Updated Post")
       });
   }
 
