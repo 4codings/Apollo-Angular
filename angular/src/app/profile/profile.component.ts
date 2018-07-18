@@ -36,7 +36,11 @@ export class ProfileComponent implements OnInit {
         query: CurrentProfile
       })
       .valueChanges
-      .subscribe(this.updateForm.bind(this));
+      .subscribe(({data}) => {
+        const {__typename, ...profile} = data.currentPerson
+        this.profile = profile
+        this.resetForm()
+      });
   }
 
   private resetForm() {
@@ -47,21 +51,12 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  private updateForm({data}) {
-    if (data.currentPerson) {
-      const {__typename, ...profile} = data.currentPerson
-      this.profile = profile
-      this.resetForm()
-      this.alert.setAlert("Updated Profile")
-    }
-  }
-
   private get firstName() { return this.profileForm.get('firstName') }
 
   private submit() {
     const newProfile: PersonPatch = {
       ...this.profile,
-      ...this.profileForm.value
+      ...this.profileForm.value,
     }
 
     this.apollo.mutate({
@@ -69,7 +64,7 @@ export class ProfileComponent implements OnInit {
       variables: {
         input: {
           id: newProfile.id,
-          personPatch: newProfile
+          personPatch: newProfile,
         }
       },
       optimisticResponse: {
@@ -81,7 +76,11 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-    }).subscribe(this.updateForm.bind(this))
+    }).subscribe(({data}) => {
+      this.profile = data.updatePersonById.person
+      this.resetForm()
+      this.alert.setAlert("Updated Profile")
+    })
 
     return false;
   }
