@@ -20,6 +20,12 @@
         <textarea class="form-control" id="body" rows="10" formControlName="body"></textarea>
       </div>
     </div>
+    <div class="form-group row" *ngIf="!isNew && post">
+      <label class="col-lg-2">Created At</label>
+      <div class="col-lg-10 col-xs-12">
+        <input [attr.disabled]="true" type="text" class="form-control" value="{{post.createdAt | date : 'medium'}}">
+      </div>
+    </div>
     <div class="float-right mb-5">
       <button [disabled]="postForm.pristine" type="button" class="btn btn-secondary mr-3" (click)="resetForm()">Reset</button>
       <button [disabled]="postForm.pristine" *ngIf="isNew" type="submit" class="btn btn-primary">Add</button>
