@@ -58,7 +58,7 @@ export class ArticleService {
         post: {
           __typename: 'Post',
           ...post,
-          createdAt: String(new Date())
+          createdAt: String(new Date())  // Optimistic Guess
         },
       }
     } : null
