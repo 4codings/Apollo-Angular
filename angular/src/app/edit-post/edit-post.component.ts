@@ -49,7 +49,7 @@ export class EditPostComponent implements OnInit {
 
     if (this.isNew) {
       this.post = {
-        id: null
+        id: null,
         headline: '',
         body: '',
         topic: null,
