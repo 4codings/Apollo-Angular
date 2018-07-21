@@ -21,6 +21,7 @@ mutation UpdatePost($input: UpdatePostByIdInput!) {
 }
 
 fragment Post on Post {
+  id
   headline
   body
   topic

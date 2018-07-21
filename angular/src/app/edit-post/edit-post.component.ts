@@ -49,6 +49,7 @@ export class EditPostComponent implements OnInit {
 
     if (this.isNew) {
       this.post = {
+        id: null
         headline: '',
         body: '',
         topic: null,
@@ -81,9 +82,9 @@ export class EditPostComponent implements OnInit {
       ...this.postForm.value
     }
     this.article.createPost(newPost)
-      .subscribe(() => {
-        this.resetForm()
+      .subscribe(({data}) => {
         this.alert.setAlert("Added Post")
+        this.router.navigate(["/edit", data.createPost.post.id])
       });
   }
 
@@ -111,6 +112,7 @@ export class EditPostComponent implements OnInit {
     } else {
       this.updatePost()
     }
+    return false
   }
 
   ngOnDestroy() {
