@@ -89,16 +89,12 @@ export class EditPostComponent implements OnInit {
   }
 
   private updatePost() {
-    const optimisitcPost: PostFragment = {
-      ...this.post,
-      ...this.postForm.value
-    }
     const patch: PostPatch = {
       ...this.postForm.value,
       id: this.id
     }
 
-    this.article.updatePost(patch, optimisitcPost)
+    this.article.updatePost(patch)
       .subscribe(({data}) => {
         this.post = data.updatePostById.post
         this.resetForm()
