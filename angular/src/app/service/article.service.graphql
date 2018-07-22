@@ -1,13 +1,13 @@
 query QueryPost($id: Int!) {
   postById(id: $id) {
-    ...Post
+    ...PostFields
   }
 }
 
 mutation CreatePost($input: CreatePostInput!) {
   createPost(input: $input) {
     post {
-      ...Post
+      ...PostFields
     }
   }
 }
@@ -15,12 +15,12 @@ mutation CreatePost($input: CreatePostInput!) {
 mutation UpdatePost($input: UpdatePostByIdInput!) {
   updatePostById(input: $input) {
     post {
-      ...Post
+      ...PostFields
     }
   }
 }
 
-fragment Post on Post {
+fragment PostFields on Post {
   id
   headline
   body

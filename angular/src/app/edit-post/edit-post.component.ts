@@ -5,7 +5,11 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { ArticleService } from '../service/article.service'
 import { AuthService } from '../service/auth.service';
 import { AlertService } from '../service/alert.service';
-import { PostFragment, PostTopic, PostPatch } from '../gen/apollo-types'
+
+import { PostFields, PostTopic } from '../service/apollo-types/PostFields'
+import { PostPatch } from '../service/apollo-types/UpdatePost'
+import { CreatePostInput } from '../service/apollo-types/CreatePost'
+
 
 @Component({
   selector: 'app-edit-post',
@@ -14,8 +18,8 @@ import { PostFragment, PostTopic, PostPatch } from '../gen/apollo-types'
 })
 export class EditPostComponent implements OnInit {
   private loading: boolean;
-  private post: PostFragment;
-  private postForm: FormGroup;  // stores mutable values
+  private post: PostFields;
+  postForm: FormGroup;  // stores mutable values
   private querySubscription: any = null;
   private topics: any[];
   private isNew: boolean;
@@ -74,7 +78,7 @@ export class EditPostComponent implements OnInit {
   }
 
   private createPost() {
-    const newPost: PostFragment = {
+    const newPost: CreatePostInput = {
       authorId: this.currentPersonId,
       headline: this.post.headline,
       body:     this.post.body,

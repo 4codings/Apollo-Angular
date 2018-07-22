@@ -3,15 +3,16 @@ import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 
 declare var require: any
-const PostList = require('graphql-tag/loader!./article-list.component.graphql')
-import { PostListQuery, PostListQueryVariables, postListFragment } from '../gen/apollo-types'
+const PostListQuery = require('graphql-tag/loader!./article-list.component.graphql')
+import { PostList, PostListVariables } from './apollo-types/PostList'
+import { RichPostFields } from './apollo-types/RichPostFields'
 
 const DEFAULT_SIZE = 8;
 
 interface Page {
   disabled: boolean
   text: string
-  queryParams: PostListQueryVariables
+  queryParams: PostListVariables
 }
 
 const max = (x, y) => (x > y) ? x : y
@@ -22,13 +23,13 @@ const max = (x, y) => (x > y) ? x : y
   styleUrls: ['./article-list.component.css']
 })
 export class ArticleListComponent implements OnInit {
-  private posts: postListFragment[];
-  private totalPosts: number;
-  private search: String = "";
+  posts: RichPostFields[];
+  totalPosts: number;
+  search: String = "";
 
-  private pages: Page[];
-  private previousPage: Page;
-  private nextPage: Page;
+  pages: Page[];
+  previousPage: Page;
+  nextPage: Page;
 
   private querySubscription: any;
 
@@ -39,7 +40,7 @@ export class ArticleListComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const qParams: PostListQueryVariables = {
+      const qParams: PostListVariables = {
         first:  +params['first']  || DEFAULT_SIZE,
         offset: +params['offset'] || 0,
         search:  params['search'] || ""
@@ -48,8 +49,8 @@ export class ArticleListComponent implements OnInit {
       this.search = qParams.search
 
       this.querySubscription = this.apollo
-        .watchQuery<PostListQuery>({
-          query: PostList,
+        .watchQuery<PostList>({
+          query: PostListQuery,
           variables: qParams
         })
         .valueChanges

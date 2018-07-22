@@ -91,15 +91,14 @@ api:
 		$(API_TAG)
 
 angular/$(APOLLO_SCHEMA):
-	cd angular && npx apollo-codegen introspect-schema \
-		http://$(API_HOST):$(API_PORT)/graphql \
-		--output $(APOLLO_SCHEMA)
+	cd angular && npx apollo schema:download \
+		--endpoint=http://$(API_HOST):$(API_PORT)/graphql \
+		$(APOLLO_SCHEMA)
 
 codegen: angular/$(APOLLO_SCHEMA)
-	cd angular && npx apollo-codegen generate **/*.graphql \
+	cd angular && npx apollo codegen:generate apollo-types \
 		--schema $(APOLLO_SCHEMA) \
-		--target typescript \
-		--output $(APOLLO_TYPES)
+		--target typescript
 
 ##################################################
 # Angular

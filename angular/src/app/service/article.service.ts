@@ -6,8 +6,14 @@ import { ApolloQueryResult } from 'apollo-client'
 import { FetchResult } from 'apollo-link'
 
 declare var require: any
-const { UpdatePost, CreatePost, QueryPost } = require('graphql-tag/loader!./article.service.graphql')
-import { QueryPostQuery, UpdatePostMutation, CreatePostMutation, PostInput, PostPatch, PostFragment } from '../gen/apollo-types'
+const {
+  UpdatePost: UpdatePostMutation,
+  CreatePost: CreatePostMutation,
+  QueryPost: QueryPostQuery
+} = require('graphql-tag/loader!./article.service.graphql')
+import { QueryPost } from './apollo-types/QueryPost'
+import { UpdatePost, PostPatch, UpdatePost_updatePostById_post } from './apollo-types/UpdatePost'
+import { CreatePost, CreatePostInput, CreatePost_createPost_post } from './apollo-types/CreatePost'
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +23,10 @@ export class ArticleService {
     private apollo: Apollo,
   ) { }
 
-  queryPost(id: number): Observable<ApolloQueryResult<QueryPostQuery>> {
+  queryPost(id: number): Observable<ApolloQueryResult<QueryPost>> {
     return this.apollo
-      .watchQuery<QueryPostQuery>({
-        query: QueryPost,
+      .watchQuery<QueryPost>({
+        query: QueryPostQuery,
         variables: {
           id: id
         }
@@ -28,7 +34,7 @@ export class ArticleService {
       .valueChanges
   }
 
-  updatePost(postPatch: PostPatch, optimisticPost: PostFragment = null): Observable<FetchResult<UpdatePostMutation>> {
+  updatePost(postPatch: PostPatch, optimisticPost: UpdatePost_updatePostById_post = null): Observable<FetchResult<UpdatePost>> {
     const optimisticResponse = (optimisticPost) ? {
       updatePostById: {
         __typename: 'UpdatePostPayload',
@@ -40,7 +46,7 @@ export class ArticleService {
     } : null
 
     return this.apollo.mutate({
-      mutation: UpdatePost,
+      mutation: UpdatePostMutation,
       variables: {
         input: {
           id: postPatch.id,
@@ -51,7 +57,7 @@ export class ArticleService {
     })
   }
 
-  createPost(post: PostFragment, optimisticPost: PostFragment = null): Observable<FetchResult<CreatePostMutation>> {
+  createPost(post: CreatePostInput, optimisticPost: CreatePost_createPost_post = null): Observable<FetchResult<CreatePost>> {
     const optimisticResponse = (optimisticPost) ? {
       createPost: {
         __typename: 'CreatePostPayload',
@@ -64,7 +70,7 @@ export class ArticleService {
     } : null
 
     return this.apollo.mutate({
-      mutation: CreatePost,
+      mutation: CreatePostMutation,
       variables: {
         input: {
           post: post

@@ -5,8 +5,13 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { AlertService } from '../service/alert.service';
 
 declare var require: any
-const { CurrentProfile, UpdateProfile } = require('graphql-tag/loader!./profile.component.graphql')
-import { CurrentProfileQuery, currentProfileFieldsFragment, PersonPatch } from '../gen/apollo-types'
+const {
+  CurrentProfile: CurrentProfileQuery,
+  UpdateProfile: UpdateProfileMutation
+} = require('graphql-tag/loader!./profile.component.graphql')
+import { CurrentProfile } from './apollo-types/CurrentProfile'
+import { UpdateProfile, PersonPatch } from './apollo-types/UpdateProfile'
+import { currentProfileFields } from './apollo-types/currentProfileFields'
 
 @Component({
   selector: 'app-profile',
@@ -15,8 +20,8 @@ import { CurrentProfileQuery, currentProfileFieldsFragment, PersonPatch } from '
 })
 export class ProfileComponent implements OnInit {
   private querySubscription: any;
-  private profile: currentProfileFieldsFragment;  // stores immutable values
-  private profileForm: FormGroup  // stores mutable values
+  profile: currentProfileFields;  // stores immutable values
+  profileForm: FormGroup  // stores mutable values
 
   constructor(
     private apollo: Apollo,
@@ -32,8 +37,8 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.querySubscription = this.apollo
-      .watchQuery<CurrentProfileQuery>({
-        query: CurrentProfile
+      .watchQuery<CurrentProfile>({
+        query: CurrentProfileQuery
       })
       .valueChanges
       .subscribe(({data}) => {
@@ -42,7 +47,7 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  private resetForm() {
+  resetForm() {
     this.profileForm.reset({
       firstName: this.profile.firstName,
       lastName:  this.profile.lastName,
@@ -50,16 +55,16 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  private get firstName() { return this.profileForm.get('firstName') }
+  get firstName() { return this.profileForm.get('firstName') }
 
-  private submit() {
+  submit() {
     const newProfile: PersonPatch = {
       ...this.profile,
       ...this.profileForm.value,
     }
 
     this.apollo.mutate({
-      mutation: UpdateProfile,
+      mutation: UpdateProfileMutation,
       variables: {
         input: {
           id: newProfile.id,
@@ -75,7 +80,8 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-    }).subscribe(({data}) => {
+    })
+    .subscribe(({data}) => {
       this.profile = data.updatePersonById.person
       this.resetForm()
       this.alert.setAlert("Updated Profile")

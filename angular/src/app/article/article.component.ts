@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 
 import { ArticleService } from '../service/article.service'
-import { PostFragment } from '../gen/apollo-types'
+import { QueryPost_postById } from '../service/apollo-types/QueryPost'
 
 @Component({
   selector: 'app-article',
@@ -11,9 +11,9 @@ import { PostFragment } from '../gen/apollo-types'
   styleUrls: ['./article.component.css']
 })
 export class ArticleComponent implements OnInit {
-  private loading: boolean;
-  private post: PostFragment;
-  private querySubscription: any;
+  loading: boolean;
+  post: QueryPost_postById;
+  querySubscription: any;
 
   constructor(
     private apollo: Apollo,

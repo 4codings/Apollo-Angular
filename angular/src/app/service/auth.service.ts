@@ -4,10 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
 declare var require: any
-const Authenticate = require('graphql-tag/loader!./authenticate.graphql')
-const CurrentPerson = require('graphql-tag/loader!./current.person.graphql')
-import { AuthenticateMutation, AuthenticateMutationVariables,
-         CurrentPersonQuery, currentPersonFieldsFragment } from '../gen/apollo-types'
+const AuthenticateMutation = require('graphql-tag/loader!./authenticate.graphql')
+const CurrentPersonQuery = require('graphql-tag/loader!./current.person.graphql')
+import { Authenticate, AuthenticateVariables } from './apollo-types/Authenticate'
+import { CurrentPerson, CurrentPerson_currentPerson } from './apollo-types/CurrentPerson'
 
 @Injectable({
   providedIn: 'root'
@@ -33,13 +33,13 @@ export class AuthService {
   AUTH_TOKEN = "authToken"
 
   login(email: string, password: string, callback: () => void): void {
-    const input: AuthenticateMutationVariables = {
+    const input: AuthenticateVariables = {
       email: email,
       password: password
     }
 
     this.apollo.mutate({
-      mutation: Authenticate,
+      mutation: AuthenticateMutation,
       variables: input
     }).subscribe(({ data }) => {
       this.setToken(data.authenticate.jwtToken)
@@ -58,10 +58,10 @@ export class AuthService {
     return !!this.getToken()
   }
 
-  currentPerson(): Observable<currentPersonFieldsFragment> {
+  currentPerson(): Observable<CurrentPerson_currentPerson> {
     return this.apollo
-      .watchQuery<CurrentPersonQuery>({
-        query: CurrentPerson
+      .watchQuery<CurrentPerson>({
+        query: CurrentPersonQuery
       })
       .valueChanges
       .pipe(map(({data}) => data.currentPerson))

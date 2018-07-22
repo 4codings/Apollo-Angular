@@ -4,7 +4,7 @@ import { Apollo } from 'apollo-angular';
 
 import { AlertService } from '../service/alert.service';
 import { AuthService } from '../service/auth.service';
-import { currentPersonFieldsFragment } from '../gen/apollo-types'
+import { CurrentPerson_currentPerson } from '../service/apollo-types/CurrentPerson'
 
 @Component({
   selector: 'app-header',
@@ -13,7 +13,7 @@ import { currentPersonFieldsFragment } from '../gen/apollo-types'
 })
 export class HeaderComponent implements OnInit {
   private querySubscription: any;
-  private currentPerson: currentPersonFieldsFragment;
+  private currentPerson: CurrentPerson_currentPerson;
 
   constructor(
     private apollo: Apollo,

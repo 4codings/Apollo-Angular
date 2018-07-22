@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 
 declare var require: any
-const AuthorList = require('graphql-tag/loader!./author-list.component.graphql')
-import { AuthorListQuery } from '../gen/apollo-types'
+const AuthorListQuery = require('graphql-tag/loader!./author-list.component.graphql')
+import { AuthorList } from './apollo-types/AuthorList'
 
 const FETCH_SIZE = 4
 
@@ -13,19 +13,19 @@ const FETCH_SIZE = 4
   styleUrls: ['./author-list.component.css']
 })
 export class AuthorListComponent implements OnInit {
-  private authors: object[];
-  private pageInfo: {endCursor: string, hasNextPage: boolean}
+  authors: object[];
+  pageInfo: {endCursor: string, hasNextPage: boolean}
 
   private querySubscription: any;
-  private feedQuery: QueryRef<AuthorListQuery>;
+  private feedQuery: QueryRef<AuthorList>;
 
   constructor(
     private apollo: Apollo,
   ) { }
 
   ngOnInit() {
-    this.feedQuery = this.apollo.watchQuery<AuthorListQuery>({
-      query: AuthorList,
+    this.feedQuery = this.apollo.watchQuery<AuthorList>({
+      query: AuthorListQuery,
       variables: {
         first: FETCH_SIZE,
         after: null
