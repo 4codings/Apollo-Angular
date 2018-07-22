@@ -3,6 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AlertService } from '../service/alert.service';
+import omitTypename from '../lib/omitTypename'
 
 declare var require: any
 const {
@@ -59,7 +60,7 @@ export class ProfileComponent implements OnInit {
 
   submit() {
     const newProfile: PersonPatch = {
-      ...this.profile,
+      ...omitTypename(this.profile),
       ...this.profileForm.value,
     }
 
