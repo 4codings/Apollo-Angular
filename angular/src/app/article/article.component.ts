@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 
-import { ArticleService } from '../service/article.service'
-import { QueryPost_postById } from '../service/apollo-types/QueryPost'
+declare var require: any
+const { Post: PostQuery } = require('graphql-tag/loader!./article.component.graphql')
+import { Post, PostVariables, Post_postById } from './apollo-types/Post'
 
 @Component({
   selector: 'app-article',
@@ -12,18 +13,24 @@ import { QueryPost_postById } from '../service/apollo-types/QueryPost'
 })
 export class ArticleComponent implements OnInit {
   loading: boolean;
-  post: QueryPost_postById;
+  post: Post_postById;
   querySubscription: any;
 
   constructor(
     private apollo: Apollo,
-    private route: ActivatedRoute,
-    private article: ArticleService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.querySubscription = this.article.queryPost(id)
+    this.querySubscription = this.apollo
+        .watchQuery<Post>({
+          query: PostQuery,
+          variables: {
+            id: id
+          }
+        })
+        .valueChanges
       .subscribe( ({data, loading}) => {
         this.post = data.postById;
         this.loading = loading;

@@ -1,0 +1,13 @@
+query Post($id: Int!) {
+  postById(id: $id) {
+    id
+    topic
+    headline
+    body
+    createdAt
+    personByAuthorId {
+      id
+      fullName
+    }
+  }
+}
