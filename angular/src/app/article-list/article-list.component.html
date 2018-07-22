@@ -7,7 +7,10 @@
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">{{post.headline}}</h5>
-        <a [routerLink]="['/author', post.personByAuthorId.id]" *ngIf="post.personByAuthorId.fullName" class="mb-2">by {{post.personByAuthorId.fullName}}</a>
+        <p class="mb-2">
+          <a [routerLink]="['/author', post.personByAuthorId.id]" *ngIf="post.personByAuthorId.fullName" class="card-link" >by {{post.personByAuthorId.fullName}}</a>
+          <a [routerLink]="['/edit', post.id]" *ngIf="post.personByAuthorId.id == currentId" class="card-link ml-3">(Edit)</a>
+        </p>
         <p class="card-text"></p>
         <a [routerLink]="['/article', post.id]" class="card-link">{{post.summary}}</a>
       </div>

@@ -6,8 +6,11 @@
         <h1 class="card-title">{{post.headline}}</h1>
         <h6 class="card-subtitle mb-2 text-muted">Published {{post.createdAt | date:'fullDate'}}</h6>
         <h4>{{post.topic}}</h4>
-        By <a [routerLink]="['/author', post.personByAuthorId.id]" class="card-subtitle mb-2 card-link">{{post.personByAuthorId.fullName}}</a>
-        <a [routerLink]="['/article', post.id]" class="card-link">Link</a>
+        <p>
+          By <a [routerLink]="['/author', post.personByAuthorId.id]" class="card-subtitle mb-2 card-link">{{post.personByAuthorId.fullName}}</a>
+          <a [routerLink]="['/article', post.id]" class="card-link ml-3">Link</a>
+          <a [routerLink]="['/edit', post.id]" *ngIf="post.personByAuthorId.id == currentId" class="card-link ml-3">(Edit)</a>
+        </p>
         <p class="mt-3">{{post.body}}</p>
       </div>
       <a [routerLink]="['/']" class="card-link">Home</a>

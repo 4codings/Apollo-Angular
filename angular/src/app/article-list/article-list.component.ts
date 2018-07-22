@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 
+import { AuthService } from '../service/auth.service';
+
 declare var require: any
 const PostListQuery = require('graphql-tag/loader!./article-list.component.graphql')
 import { PostList, PostListVariables } from './apollo-types/PostList'
@@ -26,16 +28,18 @@ export class ArticleListComponent implements OnInit {
   posts: RichPostFields[];
   totalPosts: number;
   search: String = "";
+  currentId: number;
 
   pages: Page[];
   previousPage: Page;
   nextPage: Page;
 
-  private querySubscription: any;
+  private querySubscriptions: any[] = [];
 
   constructor(
     private apollo: Apollo,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -48,7 +52,10 @@ export class ArticleListComponent implements OnInit {
 
       this.search = qParams.search
 
-      this.querySubscription = this.apollo
+      this.querySubscriptions.push(this.auth.currentPerson()
+        .subscribe( (currentPerson) => { this.currentId = currentPerson.id } ))
+
+      this.querySubscriptions.push(this.apollo
         .watchQuery<PostList>({
           query: PostListQuery,
           variables: qParams
@@ -86,11 +93,13 @@ export class ArticleListComponent implements OnInit {
               offset: qParams.offset + qParams.first
             }
           }
-        });
+        }));
     });
   }
 
   ngOnDestroy() {
-    this.querySubscription.unsubscribe();
+    this.querySubscriptions.forEach(
+      querySubscription => querySubscription.unsubscribe()
+    )
   }
 }
