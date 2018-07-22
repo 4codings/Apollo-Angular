@@ -100,6 +100,9 @@ codegen: angular/$(APOLLO_SCHEMA)
 		--schema $(APOLLO_SCHEMA) \
 		--target typescript
 
+apollo-check:
+	cd angular && npx ng build --aot
+
 ##################################################
 # Angular
 

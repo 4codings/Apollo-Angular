@@ -7,11 +7,11 @@ import { AlertService } from '../service/alert.service';
   styleUrls: ['./alert.component.css']
 })
 export class AlertComponent implements OnInit {
-  alertService: AlertService
-
   constructor(
-    alertService: AlertService,
+    private _alertService: AlertService,
   ) { }
+
+  public get alertService() { return this._alertService }
 
   ngOnInit() {
   }
