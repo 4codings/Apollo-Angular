@@ -34,7 +34,7 @@ ANGULAR_HOST=angular-host
 # Docker commands
 network:
 	-docker network rm $(NETWORK_NAME)
-	docker network create --driver bridge $(NETWORK_NAME)
+	-docker network create --driver bridge $(NETWORK_NAME)
 
 ##################################################
 # Database
