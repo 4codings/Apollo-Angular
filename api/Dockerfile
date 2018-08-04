@@ -1,10 +1,12 @@
-FROM mhart/alpine-node:10.4.0
+FROM mhart/alpine-node:10.8.0
 
-RUN npm install -g postgraphile@4.0.0-rc.1
 ARG API_WORKDIR
 WORKDIR $API_WORKDIR
+COPY package*.json $API_WORKDIR/
+COPY package-lock.json $API_WORKDIR/
+RUN npm install
 
 # Cache installation before
-COPY start.sh .
+COPY server.js $API_WORKDIR/
 
-CMD [ "sh", "start.sh" ]
+CMD [ "node", "server.js" ]
