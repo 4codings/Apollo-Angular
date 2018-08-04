@@ -18,7 +18,7 @@ POSTGRES_PORT=5432
 API_TAG=pg-api-tag
 API_NAME=pg-api-name
 API_WORKDIR=/var/workdir/api
-API_HOST=localhost
+API_HOST=api-host
 API_PORT=5001
 
 APOLLO_SCHEMA=src/app/gen/schema.json
@@ -82,6 +82,8 @@ api:
 		--volume $(shell pwd)/api:$(API_WORKDIR):ro \
 		--network=$(NETWORK_NAME) \
 		--name $(API_NAME) \
+		--network-alias=$(API_HOST) \
+		-e API_HOST=$(API_HOST) \
 		-e API_PORT=$(API_PORT) \
 		-e POSTGRES_USER=$(POSTGRES_USER) \
 		-e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) \

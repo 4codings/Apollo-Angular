@@ -2,6 +2,7 @@ const express = require("express");
 const { postgraphile } = require("postgraphile");
 
 const API_PORT          = process.env.API_PORT
+      API_HOST          = process.env.API_HOST
       POSTGRES_USER     = process.env.POSTGRES_USER
       POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD
       POSTGRES_HOST     = process.env.POSTGRES_HOST
@@ -9,8 +10,6 @@ const API_PORT          = process.env.API_PORT
       POSTGRES_DB       = process.env.POSTGRES_DB
 
 const DATABASE_URL = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
-
-console.log(`Logging in on ${DATABASE_URL}`)
 
 const options = {
   watchPg: true,
@@ -34,4 +33,10 @@ app.use(
   )
 );
 
-app.listen(API_PORT, '0.0.0.0');
+console.log(`Connecting to postgres://${POSTGRES_USER}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`)
+
+app.listen(
+  API_PORT,
+  API_HOST || '0.0.0.0',
+  callback=() => console.log(`Listening on port ${API_PORT}`)
+);
